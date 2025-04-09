@@ -1,1 +1,51 @@
-code:
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Example 2:
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+Solution: 
+Boyer-Moore Voting Algorithm used
+
+var majorityElement = function(nums) {
+    var maj = 0;     //considering index 0 value could be the majority element
+    var count = 1;
+    for(i=0; i<nums.length; i++){
+        if(nums[i] === nums[maj]){
+            count++;
+        }
+        else
+        count--;
+        if(count === 0){
+            maj = i;  //pick new element for the majority element
+            count = 1 //count reset
+        }
+    }
+    return nums[maj]
+};
+
+
+⏱️ Time Complexity: O(n)
+- The for loop runs once for every element in the array nums
+- So, the overall time taken grows linearly with the size of the input → O(n)
+
+🧠 Space Complexity: O(1)
+- This algorithm only uses a fixed number of variables (maj, count, i)
+- So, the space used stays constant, no matter how large the input → O(1)
+
+
+
+
+[NOTE]
+
+Imagine you're watching a vote battle between numbers.
+You start by choosing the first number as your candidate.
+
+For every new number:
+: If it's the same as your current candidate, it gets a vote (count++ ✅)
+: If it's different, it's a vote against your candidate (count-- ❌)
+: If the count drops to 0, it means your current candidate got cancelled out. So you pick a new candidate from the current number and reset the count to 1.
+: At the end of the array, the candidate left standing is your majority winner! 🏆
+Also, If we started with count = 0, then on the first iteration (i = 1), we'd immediately risk resetting the candidate (because count === 0 would trigger a new candidate too early) — 
+which would mess up the Boyer-Moore voting logic.
